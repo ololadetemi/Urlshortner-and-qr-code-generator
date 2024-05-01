@@ -16,7 +16,7 @@ info:
     name: MIT License
     url: 'https://choosealicense.com/licenses/mit/'
 servers:
-  - url: 'http://localhost:3000'
+  - url: 'http://localhost:8080'
 paths:
   '/users/{userId}':
     parameters:
