@@ -1,13 +1,17 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const shortUrl = require('./shortUrls');
+const shortUUID = require('short-uuid');
 const qr = require('qrcode');
 const cors = require('cors');
 const app = express();
+require('dotenv').config();
+
+const MONGODB_URI = process.env.MONGODB_URI;
 
 (async () => {
     try {
-        await mongoose.connect('mongodb+srv://lolade:ololade@cluster1.rnmpgvz.mongodb.net/', {
+        await mongoose.connect(MONGODB_URI, {
             //useNewUrlParser: true,
             //useUnifiedTopology: true 
             connectTimeoutMS: 30000,
@@ -38,35 +42,12 @@ app.get('/', async (req, res) => {
 
 
 
-// app.post('/shortUrls', async (req, res) => {
-//     try {
-//         const { fullUrl, customSlug } = req.body;
-
-       
-//         if (customSlug && customSlug.trim() !== '') {
-//             const existingUrl = await shortUrl.findOne({ customSlug });
-//             if (existingUrl) {
-//                 return res.status(400).send('Custom slug is already in use');
-//             }
-
-          
-//             await shortUrl.create({ full: fullUrl, customSlug });
-//         } else {
-          
-//             await shortUrl.create({ full: fullUrl });
-//         }
-
-//         res.redirect('/');
-//     } catch (error) {
-//         console.error('Error creating short URL:', error);
-//         res.status(500).send('Internal Server Error');
-//     }
-// });
 
 
 
 
-// 
+
+
 app.post('/shortUrls', async (req, res) => {
     try {
         let { fullUrl, customDomain, customSlug } = req.body;
@@ -112,6 +93,8 @@ app.get('/:shortUrl', async (req, res) => {
     }
 });
 
-app.listen(8080, function () {
-    console.log('Server is running on Port 8080');
+const port = process.env.PORT
+
+app.listen(port, () => {
+    console.log(`Server is running on Port ${port}`);
 });
